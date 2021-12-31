@@ -43,16 +43,7 @@ func (validator *intValidator) In(arr ...int) *intValidator {
 				return nil
 			}
 		}
-		str := ""
-		for k, v := range arr {
-			if k+1 == len(arr) {
-				str += fmt.Sprintf("%d", v)
-			} else {
-				str += fmt.Sprintf("%d,", v)
-			}
-
-		}
-		return errors.New("必须在" + str + "之间")
+		return errors.New("必须在" + intsJoin(arr, ",") + "之中")
 	})
 	return validator
 }
@@ -61,15 +52,7 @@ func (validator *intValidator) NotIn(arr ...int) *intValidator {
 	validator.push(func(i int) error {
 		for _, v := range arr {
 			if v == i {
-				str := ""
-				for k, v := range arr {
-					if k+1 == len(arr) {
-						str += fmt.Sprintf("%d", v)
-					} else {
-						str += fmt.Sprintf("%d,", v)
-					}
-				}
-				return errors.New("必须在" + str + "之间")
+				return errors.New("不能在" + intsJoin(arr, ",") + "之中")
 			}
 		}
 		return nil
