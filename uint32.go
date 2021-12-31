@@ -10,6 +10,7 @@ type uint32Validator struct {
 	value    uint32
 	handlers []func(uint32) error
 	errStr   string
+	force    bool
 }
 
 func (validator *uint32Validator) push(f func(uint32) error) {
@@ -17,6 +18,7 @@ func (validator *uint32Validator) push(f func(uint32) error) {
 }
 
 func (validator *uint32Validator) Require() *uint32Validator {
+	validator.force = true
 	validator.push(func(i uint32) error {
 		if i == 0 {
 			return errors.New("不能为空")
@@ -106,6 +108,9 @@ func (validator *uint32Validator) AddRule(f func(uint32) error) *uint32Validator
 }
 
 func (validator *uint32Validator) Exec() (err error) {
+	if !validator.force && validator.value == 0 {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {

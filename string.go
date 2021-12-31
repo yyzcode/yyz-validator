@@ -29,6 +29,7 @@ type stringValidator struct {
 	value    string
 	handlers []func(string) error
 	errStr   string
+	force    bool
 }
 
 func (validator *stringValidator) push(f func(string) error) {
@@ -36,6 +37,7 @@ func (validator *stringValidator) push(f func(string) error) {
 }
 
 func (validator *stringValidator) Require() *stringValidator {
+	validator.force = true
 	validator.push(func(s string) error {
 		if s != "" {
 			return nil
@@ -287,6 +289,9 @@ func (validator *stringValidator) AddRule(f func(string) error) *stringValidator
 }
 
 func (validator *stringValidator) Exec() (err error) {
+	if !validator.force && validator.value == "" {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {

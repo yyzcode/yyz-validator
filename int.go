@@ -10,6 +10,7 @@ type intValidator struct {
 	value    int
 	handlers []func(int) error
 	errStr   string
+	force    bool //是否强制验证，为false时遇到零值会直接跳过验证
 }
 
 func (validator *intValidator) push(f func(int) error) {
@@ -17,6 +18,7 @@ func (validator *intValidator) push(f func(int) error) {
 }
 
 func (validator *intValidator) Require() *intValidator {
+	validator.force = true
 	validator.push(func(i int) error {
 		if i == 0 {
 			return errors.New("不能为空")
@@ -106,6 +108,9 @@ func (validator *intValidator) AddRule(f func(int) error) *intValidator {
 }
 
 func (validator *intValidator) Exec() (err error) {
+	if !validator.force && validator.value == 0 {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {

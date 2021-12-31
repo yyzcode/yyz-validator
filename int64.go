@@ -10,6 +10,7 @@ type int64Validator struct {
 	value    int64
 	handlers []func(int64) error
 	errStr   string
+	force    bool
 }
 
 func (validator *int64Validator) push(f func(int64) error) {
@@ -17,6 +18,7 @@ func (validator *int64Validator) push(f func(int64) error) {
 }
 
 func (validator *int64Validator) Require() *int64Validator {
+	validator.force = true
 	validator.push(func(i int64) error {
 		if i == 0 {
 			return errors.New("不能为空")
@@ -106,6 +108,9 @@ func (validator *int64Validator) AddRule(f func(int64) error) *int64Validator {
 }
 
 func (validator *int64Validator) Exec() (err error) {
+	if !validator.force && validator.value == 0 {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {

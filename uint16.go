@@ -10,6 +10,7 @@ type uint16Validator struct {
 	value    uint16
 	handlers []func(uint16) error
 	errStr   string
+	force    bool
 }
 
 func (validator *uint16Validator) push(f func(uint16) error) {
@@ -17,6 +18,7 @@ func (validator *uint16Validator) push(f func(uint16) error) {
 }
 
 func (validator *uint16Validator) Require() *uint16Validator {
+	validator.force = true
 	validator.push(func(i uint16) error {
 		if i == 0 {
 			return errors.New("不能为空")
@@ -106,6 +108,9 @@ func (validator *uint16Validator) AddRule(f func(uint16) error) *uint16Validator
 }
 
 func (validator *uint16Validator) Exec() (err error) {
+	if !validator.force && validator.value == 0 {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {

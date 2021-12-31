@@ -10,6 +10,7 @@ type float64Validator struct {
 	value    float64
 	handlers []func(float64) error
 	errStr   string
+	force    bool
 }
 
 func (validator *float64Validator) push(f func(float64) error) {
@@ -17,6 +18,7 @@ func (validator *float64Validator) push(f func(float64) error) {
 }
 
 func (validator *float64Validator) Require() *float64Validator {
+	validator.force = true
 	validator.push(func(i float64) error {
 		if i == 0 {
 			return errors.New("不能为空")
@@ -106,6 +108,9 @@ func (validator *float64Validator) AddRule(f func(float64) error) *float64Valida
 }
 
 func (validator *float64Validator) Exec() (err error) {
+	if !validator.force && validator.value == 0 {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {

@@ -10,6 +10,7 @@ type int8Validator struct {
 	value    int8
 	handlers []func(int8) error
 	errStr   string
+	force    bool
 }
 
 func (validator *int8Validator) push(f func(int8) error) {
@@ -17,6 +18,7 @@ func (validator *int8Validator) push(f func(int8) error) {
 }
 
 func (validator *int8Validator) Require() *int8Validator {
+	validator.force = true
 	validator.push(func(i int8) error {
 		if i == 0 {
 			return errors.New("不能为空")
@@ -106,6 +108,9 @@ func (validator *int8Validator) AddRule(f func(int8) error) *int8Validator {
 }
 
 func (validator *int8Validator) Exec() (err error) {
+	if !validator.force && validator.value == 0 {
+		return nil
+	}
 	for i := 0; i < len(validator.handlers); i++ {
 		err = validator.handlers[i](validator.value)
 		if err != nil {
