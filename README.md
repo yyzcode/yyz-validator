@@ -2,7 +2,7 @@
 数据在验证前应该已经是确定的数据类型了，所以不必使用interface后做大量的反射或是断言。每种基础数据类型int，int8，int32,uint,uint8，float32，string等等都提供了专用的数据类型验证器接口。虽然这样做可能会产生较多的冗余代码，但效率高比反射高，理论上代码也更健壮。
 
 ### 安装
-go get -u github.com/yyzcoder/yyz-validator
+    go get -u github.com/yyzcoder/yyz-validator
 
 ### 示例
 
@@ -37,7 +37,7 @@ go get -u github.com/yyzcoder/yyz-validator
     }
     
     func main(){
-    	sysRole := &sysRole{
+        sysRole := &sysRole{
 	    Id:1,
 	    Name:"角色名",
 	    Desc:"角色功能职责描述",
@@ -50,5 +50,5 @@ go get -u github.com/yyzcoder/yyz-validator
 		panic(e.Error())
 	    }
 	    fmt.Println(err) //数据验证未通过
-	}
+        }
     }
