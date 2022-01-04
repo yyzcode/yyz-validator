@@ -7,9 +7,9 @@
 ### 示例
 
     import (
-	validator "github.com/yyzcoder/yyz-validator"
-	"gorm.io/gorm"
-	"time"
+	    validator "github.com/yyzcoder/yyz-validator"
+	    "gorm.io/gorm"
+	    "time"
     )
 
     type SysRole struct {
