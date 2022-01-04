@@ -21,7 +21,7 @@ func (validator *uint16Validator) Require() *uint16Validator {
 	validator.force = true
 	validator.push(func(i uint16) error {
 		if i == 0 {
-			return errors.New("不能为空")
+			return errors.New(validator.field + "不能为空")
 		}
 		return nil
 	})
@@ -33,7 +33,7 @@ func (validator *uint16Validator) Between(min, max uint16) *uint16Validator {
 		if i <= max && i >= min {
 			return nil
 		}
-		return fmt.Errorf("必须在%d到%d之间", min, max)
+		return fmt.Errorf(validator.field+"必须在%d到%d之间", min, max)
 	})
 	return validator
 }
@@ -45,7 +45,7 @@ func (validator *uint16Validator) In(arr ...uint16) *uint16Validator {
 				return nil
 			}
 		}
-		return errors.New("必须在" + uint16sJoin(arr, ",") + "之中")
+		return errors.New(validator.field + "必须在" + uint16sJoin(arr, ",") + "之中")
 	})
 	return validator
 }
@@ -54,7 +54,7 @@ func (validator *uint16Validator) NotIn(arr ...uint16) *uint16Validator {
 	validator.push(func(i uint16) error {
 		for _, v := range arr {
 			if v == i {
-				return errors.New("不能在" + uint16sJoin(arr, ",") + "之中")
+				return errors.New(validator.field + "不能在" + uint16sJoin(arr, ",") + "之中")
 			}
 		}
 		return nil
@@ -67,7 +67,7 @@ func (validator *uint16Validator) Gt(min uint16) *uint16Validator {
 		if i > min {
 			return nil
 		}
-		return fmt.Errorf("必须大于%d", min)
+		return fmt.Errorf(validator.field+"必须大于%d", min)
 	})
 	return validator
 }
@@ -77,7 +77,7 @@ func (validator *uint16Validator) Lt(max uint16) *uint16Validator {
 		if i < max {
 			return nil
 		}
-		return fmt.Errorf("必须小于%d", max)
+		return fmt.Errorf(validator.field+"必须小于%d", max)
 	})
 	return validator
 }
@@ -85,7 +85,7 @@ func (validator *uint16Validator) Lt(max uint16) *uint16Validator {
 func (validator *uint16Validator) Gte(min uint16) *uint16Validator {
 	validator.push(func(i uint16) error {
 		if i < min {
-			return fmt.Errorf("不能小于%d", min)
+			return fmt.Errorf(validator.field+"不能小于%d", min)
 		}
 		return nil
 	})
@@ -95,7 +95,7 @@ func (validator *uint16Validator) Gte(min uint16) *uint16Validator {
 func (validator *uint16Validator) Lte(max uint16) *uint16Validator {
 	validator.push(func(i uint16) error {
 		if i > max {
-			return fmt.Errorf("不能大于%d", max)
+			return fmt.Errorf(validator.field+"不能大于%d", max)
 		}
 		return nil
 	})

@@ -21,7 +21,7 @@ func (validator *float64Validator) Require() *float64Validator {
 	validator.force = true
 	validator.push(func(i float64) error {
 		if i == 0 {
-			return errors.New("不能为空")
+			return errors.New(validator.field + "不能为空")
 		}
 		return nil
 	})
@@ -33,7 +33,7 @@ func (validator *float64Validator) Between(min, max float64) *float64Validator {
 		if i <= max && i >= min {
 			return nil
 		}
-		return fmt.Errorf("必须在%g到%g之间", min, max)
+		return fmt.Errorf(validator.field+"必须在%g到%g之间", min, max)
 	})
 	return validator
 }
@@ -45,7 +45,7 @@ func (validator *float64Validator) In(arr ...float64) *float64Validator {
 				return nil
 			}
 		}
-		return errors.New("必须在" + float64sJoin(arr, ",") + "之中")
+		return errors.New(validator.field + "必须在" + float64sJoin(arr, ",") + "之中")
 	})
 	return validator
 }
@@ -54,7 +54,7 @@ func (validator *float64Validator) NotIn(arr ...float64) *float64Validator {
 	validator.push(func(i float64) error {
 		for _, v := range arr {
 			if v == i {
-				return errors.New("不能在" + float64sJoin(arr, ",") + "之中")
+				return errors.New(validator.field + "不能在" + float64sJoin(arr, ",") + "之中")
 			}
 		}
 		return nil
@@ -67,7 +67,7 @@ func (validator *float64Validator) Gt(min float64) *float64Validator {
 		if i > min {
 			return nil
 		}
-		return fmt.Errorf("必须大于%g", min)
+		return fmt.Errorf(validator.field+"必须大于%g", min)
 	})
 	return validator
 }
@@ -77,7 +77,7 @@ func (validator *float64Validator) Lt(max float64) *float64Validator {
 		if i < max {
 			return nil
 		}
-		return fmt.Errorf("必须小于%g", max)
+		return fmt.Errorf(validator.field+"必须小于%g", max)
 	})
 	return validator
 }
@@ -85,7 +85,7 @@ func (validator *float64Validator) Lt(max float64) *float64Validator {
 func (validator *float64Validator) Gte(min float64) *float64Validator {
 	validator.push(func(i float64) error {
 		if i < min {
-			return fmt.Errorf("不能小于%g", min)
+			return fmt.Errorf(validator.field+"不能小于%g", min)
 		}
 		return nil
 	})
@@ -95,7 +95,7 @@ func (validator *float64Validator) Gte(min float64) *float64Validator {
 func (validator *float64Validator) Lte(max float64) *float64Validator {
 	validator.push(func(i float64) error {
 		if i > max {
-			return fmt.Errorf("不能大于%g", max)
+			return fmt.Errorf(validator.field+"不能大于%g", max)
 		}
 		return nil
 	})

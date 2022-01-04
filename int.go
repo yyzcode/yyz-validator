@@ -21,7 +21,7 @@ func (validator *intValidator) Require() *intValidator {
 	validator.force = true
 	validator.push(func(i int) error {
 		if i == 0 {
-			return errors.New("不能为空")
+			return errors.New(validator.field + "不能为空")
 		}
 		return nil
 	})
@@ -33,7 +33,7 @@ func (validator *intValidator) Between(min, max int) *intValidator {
 		if i <= max && i >= min {
 			return nil
 		}
-		return fmt.Errorf("必须在%d到%d之间", min, max)
+		return fmt.Errorf(validator.field+"必须在%d到%d之间", min, max)
 	})
 	return validator
 }
@@ -45,7 +45,7 @@ func (validator *intValidator) In(arr ...int) *intValidator {
 				return nil
 			}
 		}
-		return errors.New("必须在" + intsJoin(arr, ",") + "之中")
+		return errors.New(validator.field + "必须在" + intsJoin(arr, ",") + "之中")
 	})
 	return validator
 }
@@ -54,7 +54,7 @@ func (validator *intValidator) NotIn(arr ...int) *intValidator {
 	validator.push(func(i int) error {
 		for _, v := range arr {
 			if v == i {
-				return errors.New("不能在" + intsJoin(arr, ",") + "之中")
+				return errors.New(validator.field + "不能在" + intsJoin(arr, ",") + "之中")
 			}
 		}
 		return nil
@@ -67,7 +67,7 @@ func (validator *intValidator) Gt(min int) *intValidator {
 		if i > min {
 			return nil
 		}
-		return fmt.Errorf("必须大于%d", min)
+		return fmt.Errorf(validator.field+"必须大于%d", min)
 	})
 	return validator
 }
@@ -77,7 +77,7 @@ func (validator *intValidator) Lt(max int) *intValidator {
 		if i < max {
 			return nil
 		}
-		return fmt.Errorf("必须小于%d", max)
+		return fmt.Errorf(validator.field+"必须小于%d", max)
 	})
 	return validator
 }
@@ -85,7 +85,7 @@ func (validator *intValidator) Lt(max int) *intValidator {
 func (validator *intValidator) Gte(min int) *intValidator {
 	validator.push(func(i int) error {
 		if i < min {
-			return fmt.Errorf("不能小于%d", min)
+			return fmt.Errorf(validator.field+"不能小于%d", min)
 		}
 		return nil
 	})
@@ -95,7 +95,7 @@ func (validator *intValidator) Gte(min int) *intValidator {
 func (validator *intValidator) Lte(max int) *intValidator {
 	validator.push(func(i int) error {
 		if i > max {
-			return fmt.Errorf("不能大于%d", max)
+			return fmt.Errorf(validator.field+"不能大于%d", max)
 		}
 		return nil
 	})

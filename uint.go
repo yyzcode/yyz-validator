@@ -21,7 +21,7 @@ func (validator *uintValidator) Require() *uintValidator {
 	validator.force = true
 	validator.push(func(i uint) error {
 		if i == 0 {
-			return errors.New("不能为空")
+			return errors.New(validator.field + "不能为空")
 		}
 		return nil
 	})
@@ -33,7 +33,7 @@ func (validator *uintValidator) Between(min, max uint) *uintValidator {
 		if i <= max && i >= min {
 			return nil
 		}
-		return fmt.Errorf("必须在%d到%d之间", min, max)
+		return fmt.Errorf(validator.field+"必须在%d到%d之间", min, max)
 	})
 	return validator
 }
@@ -45,7 +45,7 @@ func (validator *uintValidator) In(arr ...uint) *uintValidator {
 				return nil
 			}
 		}
-		return errors.New("必须在" + uintsJoin(arr, ",") + "之中")
+		return errors.New(validator.field + "必须在" + uintsJoin(arr, ",") + "之中")
 	})
 	return validator
 }
@@ -54,7 +54,7 @@ func (validator *uintValidator) NotIn(arr ...uint) *uintValidator {
 	validator.push(func(i uint) error {
 		for _, v := range arr {
 			if v == i {
-				return errors.New("不能在" + uintsJoin(arr, ",") + "之中")
+				return errors.New(validator.field + "不能在" + uintsJoin(arr, ",") + "之中")
 			}
 		}
 		return nil
@@ -67,7 +67,7 @@ func (validator *uintValidator) Gt(min uint) *uintValidator {
 		if i > min {
 			return nil
 		}
-		return fmt.Errorf("必须大于%d", min)
+		return fmt.Errorf(validator.field+"必须大于%d", min)
 	})
 	return validator
 }
@@ -77,7 +77,7 @@ func (validator *uintValidator) Lt(max uint) *uintValidator {
 		if i < max {
 			return nil
 		}
-		return fmt.Errorf("必须小于%d", max)
+		return fmt.Errorf(validator.field+"必须小于%d", max)
 	})
 	return validator
 }
@@ -85,7 +85,7 @@ func (validator *uintValidator) Lt(max uint) *uintValidator {
 func (validator *uintValidator) Gte(min uint) *uintValidator {
 	validator.push(func(i uint) error {
 		if i < min {
-			return fmt.Errorf("不能小于%d", min)
+			return fmt.Errorf(validator.field+"不能小于%d", min)
 		}
 		return nil
 	})
@@ -95,7 +95,7 @@ func (validator *uintValidator) Gte(min uint) *uintValidator {
 func (validator *uintValidator) Lte(max uint) *uintValidator {
 	validator.push(func(i uint) error {
 		if i > max {
-			return fmt.Errorf("不能大于%d", max)
+			return fmt.Errorf(validator.field+"不能大于%d", max)
 		}
 		return nil
 	})

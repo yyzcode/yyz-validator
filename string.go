@@ -42,7 +42,7 @@ func (validator *stringValidator) Require() *stringValidator {
 		if s != "" {
 			return nil
 		}
-		return errors.New("不能为空")
+		return errors.New(validator.field + "不能为空")
 	})
 	return validator
 }
@@ -53,7 +53,7 @@ func (validator *stringValidator) Length(min, max int) *stringValidator {
 			if len(s) > min {
 				return nil
 			}
-			return fmt.Errorf("长度不能小于%d", min)
+			return fmt.Errorf(validator.field+"长度不能小于%d", min)
 		})
 	}
 	if min <= 0 {
@@ -61,14 +61,14 @@ func (validator *stringValidator) Length(min, max int) *stringValidator {
 			if len(s) < max {
 				return nil
 			}
-			return fmt.Errorf("长度不能超过%d", min)
+			return fmt.Errorf(validator.field+"长度不能超过%d", min)
 		})
 	}
 	validator.push(func(s string) error {
 		if len(s) >= min && len(s) <= max {
 			return nil
 		}
-		return fmt.Errorf("长度必须在%d到%d之间", min, max)
+		return fmt.Errorf(validator.field+"长度必须在%d到%d之间", min, max)
 	})
 	return validator
 }
@@ -80,7 +80,7 @@ func (validator *stringValidator) In(arr ...string) *stringValidator {
 				return nil
 			}
 		}
-		return fmt.Errorf("必须在%s之间", strings.Join(arr, ","))
+		return fmt.Errorf(validator.field+"必须在%s之间", strings.Join(arr, ","))
 	})
 	return validator
 }
@@ -89,7 +89,7 @@ func (validator *stringValidator) NotIn(arr ...string) *stringValidator {
 	validator.push(func(s string) error {
 		for i := 0; i < len(arr); i++ {
 			if arr[i] == s {
-				return fmt.Errorf("不能在%s之间", strings.Join(arr, ","))
+				return fmt.Errorf(validator.field+"不能在%s之间", strings.Join(arr, ","))
 			}
 		}
 		return nil
@@ -102,7 +102,7 @@ func (validator *stringValidator) Number() *stringValidator {
 		if regexpRules["number"].MatchString(s) {
 			return nil
 		}
-		return errors.New("必须是数字")
+		return errors.New(validator.field + "必须是数字")
 	})
 	return validator
 }
@@ -112,7 +112,7 @@ func (validator *stringValidator) Integer() *stringValidator {
 		if regexpRules["integer"].MatchString(s) {
 			return nil
 		}
-		return errors.New("必须是整数")
+		return errors.New(validator.field + "必须是整数")
 	})
 	return validator
 }
@@ -126,7 +126,7 @@ func (validator *stringValidator) Gt(min float64) *stringValidator {
 		if f > min {
 			return nil
 		}
-		return fmt.Errorf("必须大于%g", min)
+		return fmt.Errorf(validator.field+"必须大于%g", min)
 	})
 	return validator
 }
@@ -140,7 +140,7 @@ func (validator *stringValidator) Lt(max float64) *stringValidator {
 		if f < max {
 			return nil
 		}
-		return fmt.Errorf("必须小于%g", max)
+		return fmt.Errorf(validator.field+"必须小于%g", max)
 	})
 	return validator
 }
@@ -154,7 +154,7 @@ func (validator *stringValidator) Gte(min float64) *stringValidator {
 		if f > min {
 			return nil
 		}
-		return fmt.Errorf("不能小于%g", min)
+		return fmt.Errorf(validator.field+"不能小于%g", min)
 	})
 	return validator
 }
@@ -168,7 +168,7 @@ func (validator *stringValidator) Lte(max float64) *stringValidator {
 		if f < max {
 			return nil
 		}
-		return fmt.Errorf("不能大于%g", max)
+		return fmt.Errorf(validator.field+"不能大于%g", max)
 	})
 	return validator
 }
@@ -178,7 +178,7 @@ func (validator *stringValidator) Alpha() *stringValidator {
 		if regexpRules["alpha"].MatchString(s) {
 			return nil
 		}
-		return errors.New("只能包含字母")
+		return errors.New(validator.field + "只能包含字母")
 	})
 	return validator
 }
@@ -188,7 +188,7 @@ func (validator *stringValidator) AlphaNum() *stringValidator {
 		if regexpRules["alphaNum"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("只能包含字母和数字")
+		return fmt.Errorf(validator.field + "只能包含字母和数字")
 	})
 	return validator
 }
@@ -198,7 +198,7 @@ func (validator *stringValidator) AlphaDash() *stringValidator {
 		if regexpRules["alphaDash"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("只能包含字母、数字和-_")
+		return fmt.Errorf(validator.field + "只能包含字母、数字和-_")
 	})
 	return validator
 }
@@ -208,7 +208,7 @@ func (validator *stringValidator) Chs() *stringValidator {
 		if regexpRules["chs"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("只能包含中文")
+		return fmt.Errorf(validator.field + "只能包含中文")
 	})
 	return validator
 }
@@ -218,7 +218,7 @@ func (validator *stringValidator) ChsAlpha() *stringValidator {
 		if regexpRules["chsAlpha"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("只能包含中文和字母")
+		return fmt.Errorf(validator.field + "只能包含中文和字母")
 	})
 	return validator
 }
@@ -228,7 +228,7 @@ func (validator *stringValidator) ChsAlphaNum() *stringValidator {
 		if regexpRules["chsAlphaNum"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("只能包含中文、字母和数字")
+		return fmt.Errorf(validator.field + "只能包含中文、字母和数字")
 	})
 	return validator
 }
@@ -238,7 +238,7 @@ func (validator *stringValidator) ChsDash() *stringValidator {
 		if regexpRules["chsDash"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("不能包含特殊字符")
+		return fmt.Errorf(validator.field + "不能包含特殊字符")
 	})
 	return validator
 }
@@ -248,7 +248,7 @@ func (validator *stringValidator) Phone() *stringValidator {
 		if regexpRules["phone"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("不是一个有效的手机号")
+		return fmt.Errorf(validator.field + "不是一个有效的手机号")
 	})
 	return validator
 }
@@ -258,7 +258,7 @@ func (validator *stringValidator) Zip() *stringValidator {
 		if regexpRules["zip"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("不是一个有效的邮编")
+		return fmt.Errorf(validator.field + "不是一个有效的邮编")
 	})
 	return validator
 }
@@ -268,7 +268,7 @@ func (validator *stringValidator) Ip() *stringValidator {
 		if regexpRules["ip"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("不是一个有效的ip")
+		return fmt.Errorf(validator.field + "不是一个有效的ip")
 	})
 	return validator
 }
@@ -278,7 +278,7 @@ func (validator *stringValidator) IdCard() *stringValidator {
 		if regexpRules["idCard"].MatchString(s) {
 			return nil
 		}
-		return fmt.Errorf("不是一个有效的身份证号")
+		return fmt.Errorf(validator.field + "不是一个有效的身份证号")
 	})
 	return validator
 }
