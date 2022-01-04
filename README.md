@@ -47,7 +47,7 @@
 	    if err != nil {
 	        if e, ok := err.(validator.InternalError); ok {
 	    	    //验证器内部错误（runtime错误）
-		        panic(e.Error())
+                panic(e.Error())
 	        }
 	        fmt.Println(err) //数据验证未通过
         }
