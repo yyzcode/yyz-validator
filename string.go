@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var regexpRules = map[string]*regexp.Regexp{
@@ -279,6 +280,16 @@ func (validator *stringValidator) IdCard() *stringValidator {
 			return nil
 		}
 		return fmt.Errorf(validator.field + "不是一个有效的身份证号")
+	})
+	return validator
+}
+
+func (validator *stringValidator) DateTime(formatter string) *stringValidator {
+	validator.push(func(s string) error {
+		if _, err := time.Parse(formatter, s); err != nil {
+			return fmt.Errorf(validator.field + "时间格式错误")
+		}
+		return nil
 	})
 	return validator
 }
