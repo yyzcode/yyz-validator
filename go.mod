@@ -1,3 +1,3 @@
-module github.com/yyzcoder/yyz-validator
+module github.com/yyzcode/yyz-validator
 
 go 1.17

@@ -2,7 +2,7 @@
 数据在验证前应该已经是确定的数据类型了，所以不必使用interface后做大量的反射或是断言。每种基础数据类型int，int8，int32,uint,uint8，float32，string等等都提供了专用的数据类型验证器接口。虽然这样做可能会产生较多的冗余代码，但效率高比反射高，理论上代码也更健壮。
 
 ### 安装
-    go get -u github.com/yyzcoder/yyz-validator
+    go get -u github.com/yyzcode/yyz-validator
 
 ### 示例
 
@@ -10,7 +10,7 @@
 package main
 
 import (
-	validator "github.com/yyzcoder/yyz-validator"
+	validator "github.com/yyzcode/yyz-validator"
 	"gorm.io/gorm"
 	"time"
 	"fmt"
